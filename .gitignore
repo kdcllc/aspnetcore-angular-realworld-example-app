@@ -224,6 +224,9 @@ UpgradeLog*.htm
 *.mdf
 *.ldf
 
+@ Sqlite
+*.db
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -276,6 +279,6 @@ __pycache__/
 # Cake - Uncomment if you are using it
 # tools/
 tools/Cake.CoreCLR
-.vscode
+# .vscode
 tools
 .dotnet

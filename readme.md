@@ -26,7 +26,10 @@ This is using ASP.NET Core with:
 - [Cake](http://cakebuild.net/) for building!
 - JWT authentication using [ASP.NET Core JWT Bearer Authentication](https://github.com/aspnet/Security/tree/dev/src/Microsoft.AspNetCore.Authentication.JwtBearer).
 - [Microsoft ASP.NET Core JavaScript Services](https://github.com/aspnet/JavaScriptServices)
-This basic architecture is based on this reference architecture: [https://github.com/jbogard/ContosoUniversityCore](https://github.com/jbogard/ContosoUniversityCore)
+
+
+This basic server-side architecture is based on this reference architecture: [https://github.com/jbogard/ContosoUniversityCore](https://github.com/jbogard/ContosoUniversityCore)
+
 
 **Angular General functionality:**
 
