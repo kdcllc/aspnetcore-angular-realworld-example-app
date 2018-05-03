@@ -1,5 +1,7 @@
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Conduit
 {
@@ -7,7 +9,9 @@ namespace Conduit
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build()
+                                     .SeedData()
+                                     .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -18,5 +22,7 @@ namespace Conduit
                 //.UseDefaultServiceProvider(options =>
                 //                                options.ValidateScopes = false)
             ;
+
     }
+    
 }

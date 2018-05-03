@@ -1,5 +1,7 @@
+using Conduit.Infrastructure;
 using Conduit.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -62,6 +64,19 @@ namespace Conduit
 
             loggerFactory.AddSerilog(log);
             Log.Logger = log;
+        }
+
+        public static IWebHost SeedData(this IWebHost host)
+        {
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetService<ConduitContext>();
+                var hasher = services.GetService<IPasswordHasher>();
+
+                DataSeeder.Seed(context, hasher);
+            }
+            return host;
         }
     }
 }

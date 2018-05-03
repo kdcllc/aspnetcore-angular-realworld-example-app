@@ -198,6 +198,9 @@ UpgradeLog*.htm
 *.mdf
 *.ldf
 
+# SQLlite
+realworld.db
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout

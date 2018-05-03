@@ -95,15 +95,6 @@ namespace Conduit
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //}
-
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             
@@ -161,7 +152,6 @@ namespace Conduit
             });
             #endregion
 
-            // app.ApplicationServices.GetRequiredService<ConduitContext>().Database.EnsureCreated();
         }
     }
 }
