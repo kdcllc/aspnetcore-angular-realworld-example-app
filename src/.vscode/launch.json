@@ -19,7 +19,13 @@
             "name": "Launch Chrome",
             "url": "http://localhost:5000",
             "webRoot": "${workspaceRoot}/ClientApp/src",
-            "sourceMaps": true
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                  "webpack:/./*": "${webRoot}/*",
+                   "webpack:/src/*": "${workspaceRoot}/ClientApp/src*",
+                   "webpack:/*": "*",
+                   "webpack:/./~/*": "${webRoot}/node_modules/*"
+            }
         },
         {
             "name": ".NET Core Launch (console)",
