@@ -1,11 +1,15 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Conduit.Infrastructure;
 using Conduit.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -94,6 +98,55 @@ namespace Conduit
                 DataSeeder.Seed(context, hasher);
             }
             return host;
+        }
+
+
+        public static void AddSpa(this IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            Action<SpaOptions> configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+            var options = new SpaOptions();
+            configuration.Invoke(options);
+
+            // branch middleware to a app-specific path
+            app.Map(options.MapPath, spaApp => {
+                // we only need SPA static files in prod mode
+                // don't use AddSpaStaticFiles -- it puts a Singleton file provider in the container
+                var fileOptions = new StaticFileOptions();
+                if (!env.IsDevelopment())
+                {
+                    // path should be dist folder of the SPA
+                    // this will error if ng prod build has not been run
+                    var staticPath = Path.Combine(Directory.GetCurrentDirectory(), $"{options.SourcePath}{options.DistPath}");
+                    fileOptions.FileProvider = new PhysicalFileProvider(staticPath);
+
+                    // this will root in the MapPath since we are branched
+                    spaApp.UseSpaStaticFiles(options: fileOptions);
+                }
+
+                // create the SPA within the branch path
+                spaApp.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = options.SourcePath;
+                    spa.Options.DefaultPage = options.DefaultPage;
+
+
+                    if (env.IsDevelopment())
+                    {
+                        // this defaults to start:hosted, which has some ng serve options for multi-spa
+                        spa.UseAngularCliServer(npmScript: options.DevServerScript);
+                    }
+                    else
+                    {
+                        // ensure the DefaultPage is found within the app
+                        spa.Options.DefaultPageStaticFileOptions = fileOptions;
+                    }
+                });
+            });
         }
     }
 }
