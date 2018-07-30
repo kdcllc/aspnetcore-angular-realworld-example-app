@@ -1,3 +1,6 @@
+using System;
+using System.Text;
+using System.Threading.Tasks;
 using Conduit.Infrastructure;
 using Conduit.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,8 +10,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
-using System;
-using System.Text;
 
 namespace Conduit
 {
@@ -18,7 +19,7 @@ namespace Conduit
         {
             services.AddOptions();
 
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("somethinglongerforthisdumbalgorithmisrequired"));
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("TheLordIsmyShepherdPsalm23"));
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             var issuer = "issuer";
             var audience = "audience";
@@ -46,10 +47,25 @@ namespace Conduit
                 // If you want to allow a certain amount of clock drift, set that here:
                 ClockSkew = TimeSpan.Zero
             };
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => { options.TokenValidationParameters = tokenValidationParameters; })
-                .AddJwtBearer("Token", options => { options.TokenValidationParameters = tokenValidationParameters; });
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = tokenValidationParameters;
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = (context) =>
+                        {
+                            var token = context.HttpContext.Request.Headers["Authorization"];
+                            if (token.Count > 0 && token[0].StartsWith("Token ", StringComparison.OrdinalIgnoreCase))
+                            {
+                                context.Token = token[0].Substring("Token ".Length).Trim();
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+
+                });
         }
 
         public static void AddSerilogLogging(this ILoggerFactory loggerFactory)
@@ -65,6 +81,7 @@ namespace Conduit
             loggerFactory.AddSerilog(log);
             Log.Logger = log;
         }
+
 
         public static IWebHost SeedData(this IWebHost host)
         {
