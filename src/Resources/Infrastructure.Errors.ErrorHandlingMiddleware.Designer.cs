@@ -61,7 +61,7 @@ namespace Conduit.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An internal error has occurred..
+        ///   Looks up a localized string similar to An internal error has occurred. {0}.
         /// </summary>
         internal static string InternalServerError {
             get {

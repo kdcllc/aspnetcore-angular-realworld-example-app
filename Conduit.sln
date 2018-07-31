@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0B3E755B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{396F2FF7-7349-4E97-B063-116502653B31}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		docker-compose.yml = docker-compose.yml
 		readme.md = readme.md
 	EndProjectSection
 EndProject

@@ -79,15 +79,6 @@ namespace Conduit
             
             services.AddJwt();
 
-            // Detail information for this template can be found at:
-            // https://docs.microsoft.com/en-us/aspnet/core/spa/angular?tabs=netcore-cli#server-side-rendering
-
-            //// In production, the Angular files will be served from this directory
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist";
-            //});
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -132,31 +123,11 @@ namespace Conduit
             #endregion
 
             #region SPA Code
-            //app.UseSpa(spa =>
-            //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
-            //    spa.Options.SourcePath = "ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-
-            //        // Manully starting Angular CLI server by cd ClientApp -> npm start
-            //        // commenting out  spa.UseAngularCliServer(npmScript: "start");
-            //        // and uncomment the code below:
-            //        // use ng serve from ClientApp
-            //        // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-
-            //        // This allows for C# code and also TypeScript to be refreshed
-            //        spa.UseAngularCliServer(npmScript: "start");
-            //    }
-
-
-            //});
 
             app.AddSpa(env, options => {
                 options.MapPath = "/spa";
                 options.SourcePath = "ClientApp";
+                options.DevServerScript = "start:hosted:spa";
             });
 
             #endregion

@@ -3,11 +3,15 @@ using System.IO;
 using System.Threading.Tasks;
 using Conduit.Infrastructure;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 
 namespace Conduit.IntegrationTests
 {
+#pragma warning disable CA1063 // Implement IDisposable Correctly
     public class SliceFixture : IDisposable
+#pragma warning restore CA1063 // Implement IDisposable Correctly
     {
         private readonly IServiceScopeFactory _scopeFactory;
 
@@ -15,8 +19,9 @@ namespace Conduit.IntegrationTests
 
         public SliceFixture()
         {
-            AutoMapper.ServiceCollectionExtensions.UseStaticRegistration = false;
-            var startup = new Startup();
+            var config = new Mock<IConfiguration>();
+
+            var startup = new Startup(config.Object);
             var services = new ServiceCollection();
 
             services.AddSingleton(new ConduitContext(DbName));
@@ -30,7 +35,9 @@ namespace Conduit.IntegrationTests
             _scopeFactory = provider.GetService<IServiceScopeFactory>();
         }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             File.Delete(DbName);
         }

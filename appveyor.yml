@@ -1,0 +1,39 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+environment:
+    ASPNETCORE_ENVIRONMENT: Production
+install:
+- ps: >-
+    Install-Product node 8
+before_build:
+- cmd: >-
+    dotnet restore
+build:
+  publish_wap_xcopy: true
+  parallel: true
+  verbosity: detailed
+after_test:
+- ps: dotnet publish ./src/Conduit.csproj -c Release -o ../../Publish/Release
+artifacts:
+- path: ./Publish/Release
+  name: PublishRelease
+deploy:
+- provider: AzureAppServiceZipDeploy
+  appservice_environment: false
+  website: conduit2
+  username: kdcllc-conduit
+  password:
+    secure: K3SnLbaaY9Q8zbg75JxW/A==
+  artifact: PublishRelease
