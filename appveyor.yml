@@ -1,8 +1,10 @@
 version: 1.0.{build}
 image: Visual Studio 2017
-configuration:
-- Debug
-- Release
+branches:
+    only:
+      - master
+pull_requests:
+  do_not_increment_build_number: true
 
 dotnet_csproj:
   patch: true
@@ -19,7 +21,7 @@ install:
     Install-Product node 8
 before_build:
 - cmd: >-
-    dotnet restore
+    dotnet restore Conduit.sln
 build:
   publish_wap_xcopy: true
   parallel: true
@@ -37,3 +39,5 @@ deploy:
   password:
     secure: K3SnLbaaY9Q8zbg75JxW/A==
   artifact: PublishRelease
+  on:
+   branch: master
