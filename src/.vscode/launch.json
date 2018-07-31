@@ -84,6 +84,25 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
+        },
+
+        "name": "Docker Debugger",
+        "type": "coreclr",
+        "request": "attach",
+        "processId": "${command:pickRemoteProcess}",
+        "pipeTransport": {
+            "pipeCwd": "${workspaceFolder}",
+            "pipeProgram": "docker",
+            "pipeArgs": [
+                "exec",
+                "-i",
+                "17fcb476880d" //container id
+            ],
+            "quoteArgs": false,
+            "debuggerPath": "/vsdbg/vsdbg"
+        },
+        "sourceFileMap": {
+            "/app": "${workspaceFolder}"
         }
     ,]
 }

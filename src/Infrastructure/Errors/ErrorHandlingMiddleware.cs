@@ -50,14 +50,14 @@ namespace Conduit.Infrastructure.Errors
             {
                 if (!string.IsNullOrWhiteSpace(exception.Message))
                 {
-                    logger.LogError("", exception.Message);
+                    logger.LogError(exception.ToString());
                 }
 
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
                 var result = JsonConvert.SerializeObject(new
                 {
-                    errors = localizer[Constants.ErrorHandlingMiddleware.InternalServerError].Value
+                    errors = string.Format(localizer[Constants.ErrorHandlingMiddleware.InternalServerError].Value, exception.ToString())
                 });
                 await context.Response.WriteAsync(result);
             }

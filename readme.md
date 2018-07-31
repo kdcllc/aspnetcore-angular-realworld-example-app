@@ -10,7 +10,7 @@ We've gone to great lengths to adhere to the ASP.NET Core community styleguides 
 
 For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
 
-# How it works
+## How it works
 
 This is using ASP.NET Core with:
 
@@ -59,16 +59,43 @@ This basic server-side architecture is based on this reference architecture: [ht
     - Delete comment button (only shown to comment's author)
 - Profile page (URL: /#/profile/:username, /#/profile/:username/favorites )
     - Show basic user info
-    - List of articles populated from author's created articles or author's favorited articles
+    - List of articles populated from author's created articles or author's favorites articles
 
-# Getting started
+## Getting started
 
 Install the .NET Core SDK and lots of documentation: [https://www.microsoft.com/net/download/core](https://www.microsoft.com/net/download/core)
 
 Documentation for ASP.NET Core: [https://docs.microsoft.com/en-us/aspnet/core/](https://docs.microsoft.com/en-us/aspnet/core/)
 
 Swagger URL:
-`http://localhost:5000/swagger`
+` http://localhost:5000/swagger `
 
 Angular SPA URL:
-`http://localhost:5000/spa`
+` http://localhost:5000/spa `
+
+## Docker support
+To build container run the following command from the root of the project where `.sln` file is located:
+```
+    docker build . -f "src\Dockerfile" -t "conduit:latest"
+
+    OR
+
+```
+To run this container
+```
+    docker run --rm -it -p 5000:5000 conduit:latest
+```
+
+### Docker-compose
+```
+    docker-compose -f docker-compose.vscode.yml up -d --build
+
+```
+
+```
+    docker-compose -f docker-compose.vscode.yml down
+```
+
+## Azure deployed instance
+
+[http://conduit2.azurewebsites.net/](http://conduit2.azurewebsites.net/)

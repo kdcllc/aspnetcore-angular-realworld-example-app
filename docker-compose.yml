@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  conduit:
+    image: conduit
+    build:
+      context: .
+      dockerfile: src/Dockerfile
