@@ -86,7 +86,7 @@
             "processId": "${command:pickProcess}"
         },
 
-        "name": ".NET Core Remote Attach",
+        "name": "Docker Debugger",
         "type": "coreclr",
         "request": "attach",
         "processId": "${command:pickRemoteProcess}",
