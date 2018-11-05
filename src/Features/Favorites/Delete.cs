@@ -41,15 +41,15 @@ namespace Conduit.Features.Favorites
                 _currentUserAccessor = currentUserAccessor;
             }
 
-            public async Task<ArticleEnvelope> Handle(Command message, CancellationToken cancellationToken)
+            public async Task<ArticleEnvelope> Handle(Command request, CancellationToken cancellationToken)
             {
-                var article = await _context.Articles.FirstOrDefaultAsync(x => x.Slug == message.Slug, cancellationToken);
+                var article = await _context.Articles.FirstOrDefaultAsync(x => x.Slug == request.Slug, cancellationToken);
 
                 if (article == null)
                 {
                     throw new RestException(HttpStatusCode.NotFound);
                 }
-                
+
                 var person = await _context.Persons.FirstOrDefaultAsync(x => x.Username == _currentUserAccessor.GetCurrentUsername(), cancellationToken);
 
                 var favorite = await _context.ArticleFavorites.FirstOrDefaultAsync(x => x.ArticleId == article.ArticleId && x.PersonId == person.PersonId, cancellationToken);

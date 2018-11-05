@@ -1,7 +1,7 @@
 # BUILD IMAGE: docker build . -f "src\Dockerfile" -t "conduit:latest"
 # RUNNING THE IMAGE docker run --rm -it -p 5000:5000 conduit:latest
 
-FROM microsoft/dotnet:2.1.2-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.1.5-aspnetcore-runtime AS base
 #install ps
 RUN apt-get update && apt-get install -y procps
 
@@ -14,7 +14,7 @@ RUN apt-get update \
     && curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l /vsdbg
 # END Debugger
 
-# NODE
+# INSTALL NODE.JS
 ENV NODE_VERSION 8.11.3
 ENV NODE_DOWNLOAD_URL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz
 # https://nodejs.org/download/release/v8.11.3/SHASUMS256.txt
@@ -30,10 +30,9 @@ RUN curl -SL "$NODE_DOWNLOAD_URL" --output nodejs.tar.gz \
 WORKDIR /app
 EXPOSE 5000
 
-# https://github.com/aspnet/aspnet-docker/tree/master/2.1
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM microsoft/dotnet:2.1.403-sdk AS build
 
-# NODE
+# INSTALL NODE.JS
 ENV NODE_VERSION 8.11.3
 ENV NODE_DOWNLOAD_URL https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz
 # https://nodejs.org/download/release/v8.11.3/SHASUMS256.txt
